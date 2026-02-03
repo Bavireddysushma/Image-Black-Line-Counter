@@ -1,0 +1,32 @@
+Technical Summary: Problems and Solutions
+=========================================
+
+Problem 1: JPEG Compression Artifacts (Data Integrity)
+MS Paint JPEGs use lossy compression, which causes pure black pixels to shift into
+various shades of dark gray. A strict "color == black" check would fail to detect
+these lines.
+Solution:
+The application utilizes a luminance threshold (averaging the R, G, and B channels)
+rather than an exact color match. Any pixel with a brightness value below the 50%
+threshold (128) is identified as black, ensuring consistent detection despite
+compression noise.
+
+Problem 2: Performance Bottlenecks in White Space (Algorithm Optimization)
+Scanning every single pixel in high-resolution images can be computationally
+expensive, especially in empty images where a "Fast Path" hit isn't possible.
+Solution:
+A Tiered Probing algorithm was implemented. Based on the requirement that target
+lines are continuous, the algorithm probes the vertical midpoint and quarter-marks
+first. This achieves O(1) detection per column for the vast majority of cases,
+while an exhaustive fallback scan is retained only as a secondary measure to
+guarantee 100% accuracy.
+
+Problem 3: Error Handling and Application Stability (Defensive Programming)
+Handling absolute file paths via command-line arguments can lead to crashes if
+the path is invalid, permissions are restricted, or the file is not an image.
+Solution:
+The application implements a multi-layered exception hierarchy. Specific blocks
+catch FileNotFoundException, SecurityException, and IOException to provide clear,
+actionable feedback to the user. A final generic catch-all handler ensures the
+application fulfills the "must not crash" requirement, providing stability in
+unforeseen edge cases.
