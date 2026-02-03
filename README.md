@@ -41,8 +41,18 @@ Run the application by providing the absolute path to a JPEG image. Wrap the pat
 ## 📂 Project Structure
 
 * **LineCounter.java**: Main application source code containing the detection logic.
+* **LineCounterTest.java**: Automated test suite for logic verification.
 * **Summary_of_Tackled_Problems.txt**: A detailed breakdown of technical hurdles (JPEG noise, empty-image bottlenecks) and their solutions.
 * **README.md**: Setup and usage instructions.
+
+---
+
+## 🧪 Testing
+A `LineCounterTest.java` file is included to verify the core logic.
+To run tests:
+1. javac LineCounterTest.java
+2. java -ea LineCounterTest
+   *(Note: Use -ea to enable assertions)*
 
 ---
 
