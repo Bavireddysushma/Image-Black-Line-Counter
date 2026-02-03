@@ -83,7 +83,7 @@ public class LineCounterTest {
     // Helper to bridge to your LineCounter logic
     private static int count(BufferedImage img) {
         // This invokes the logic we developed for your main class
-        return invokeLineCounterLogic(img);
+        return LineCounter.countVerticalLines(img);
     }
 
     private static void fillBackground(BufferedImage img, Color color) {
@@ -100,52 +100,4 @@ public class LineCounterTest {
         }
     }
 
-    /**
-     * Re-implementation of the LineCounter core algorithm for testing purposes.
-     * Keeps the main class clean and avoids 'protected' access issues.
-     */
-    private static int invokeLineCounterLogic(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int lineCount = 0;
-        boolean inLineScope = false;
-
-        for (int x = 0; x < width; x++) {
-            if (isBlackDetectedInColumn(image, x, height)) {
-                if (!inLineScope) {
-                    lineCount++;
-                    inLineScope = true;
-                }
-            } else {
-                inLineScope = false;
-            }
-        }
-        return lineCount;
-    }
-
-    private static boolean isBlackDetectedInColumn(BufferedImage img, int x, int height) {
-        int mid = height / 2;
-        int q1 = height / 4;
-        int q3 = (height * 3) / 4;
-
-        // Optimized probes
-        if (isPixelBlack(img.getRGB(x, mid))) return true;
-        if (isPixelBlack(img.getRGB(x, q1))) return true;
-        if (isPixelBlack(img.getRGB(x, q3))) return true;
-
-        // Strict fallback scan
-        for (int y = 0; y < height; y++) {
-            if (y == mid || y == q1 || y == q3) continue;
-            if (isPixelBlack(img.getRGB(x, y))) return true;
-        }
-
-        return false;
-    }
-
-    private static boolean isPixelBlack(int rgb) {
-        int r = (rgb >> 16) & 0xFF;
-        int g = (rgb >> 8) & 0xFF;
-        int b = (rgb) & 0xFF;
-        return (r + g + b) / 3 < 128;
-    }
 }

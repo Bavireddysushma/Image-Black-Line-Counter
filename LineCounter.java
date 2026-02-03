@@ -53,7 +53,7 @@ public class LineCounter {
      * Logic: Horizontal column-by-column scan.
      * Uses a state-tracking flag to count distinct vertical lines regardless of thickness.
      */
-    private static int countVerticalLines(BufferedImage image) {
+    static int countVerticalLines(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
         int lineCount = 0;
